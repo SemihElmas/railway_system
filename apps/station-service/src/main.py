@@ -67,5 +67,17 @@ def delete_station(station_id: int):
     return {"message": "Station deleted"}
 
 
+from fastapi import UploadFile, File
+from helpers.csv_import import import_stations_from_csv
+
+
+@app.post("/import-csv")
+async def import_csv(file: UploadFile = File(...)):
+    content = await file.read()
+    result = import_stations_from_csv(content.decode("utf-8"))
+    return {
+        "message": f"{result['imported']} stations imported, {result['errors']} errors found"
+    }
+
 if __name__ == "__main__":
     uvicorn.run(app, host="0.0.0.0", port=8000)
