@@ -1,0 +1,32 @@
+version: "3.8"
+
+services:
+  station-service:
+    build:
+      context: .
+      dockerfile: apps/station-service/Dockerfile
+    ports:
+      - "8001:8000"
+    volumes:
+      - db-data:/app/data
+    networks:
+      - railway-net
+
+  schedule-service:
+    build:
+      context: .
+      dockerfile: apps/schedule-service/Dockerfile
+    ports:
+      - "8000:8000"
+    depends_on:
+      - station-service
+    environment:
+      - STATION_SERVICE_URL=http://station-service:8000
+    networks:
+      - railway-net
+
+volumes:
+  db-data:
+
+networks:
+  railway-net:
