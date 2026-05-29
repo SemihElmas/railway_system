@@ -20,3 +20,4 @@ docker-compose up
 - GET /connections?from_city=Warszawa&to_city=Kraków - search connections
 - GET /schedules - list all schedules
 - POST /schedules - create recurring schedule
+ 
